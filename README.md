@@ -1,5 +1,5 @@
 # Recipe Backend Application
 
 ## Running project
-- docker compose up
-- docker compose down
+- docker compose up (-d)
+- (docker compose down) ctrl + c 
