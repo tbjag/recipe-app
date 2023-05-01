@@ -1,6 +1,4 @@
-# Recipe App
-
-## WIP Under Construction
+# Recipe Backend Application
 
 ## Running project
 - docker compose up (-d)
