@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+  clientOutput = "@prisma/client"
+  output = "./pothos-types.ts"
+}
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String   @unique
+  role           Role     @default(BASIC)
+  writtenRecipe  Recipe[] @relation("WrittenRecipe")
+  favoriteRecipe Recipe[]
+}
+
+model Recipe {
+  id          String       @id @default(uuid())
+  title       String
+  course      Course
+  cuisine     Cuisine      @relation(fields: [cuisineId], references: [id])
+  cuisineId   String
+  author      User         @relation("WrittenRecipe", fields: [authorId], references: [id])
+  authorId    String
+  favoritedBy User[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  ingredients Ingredient[]
+  steps       String[]
+}
+
+model Ingredient {
+  id              String  @id @default(uuid())
+  recipe          Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId        String?
+  name            String
+  amount          Float
+  measurementType String
+  measurement     Float
+}
+
+model Cuisine {
+  id     String   @id @default(uuid())
+  name   String   @unique
+  recipe Recipe[]
+}
+
+enum Role {
+  BASIC
+  ADMIN
+  WRITER
+}
+
+enum Course {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+  DESSERT
+}
