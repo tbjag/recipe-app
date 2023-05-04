@@ -46,8 +46,8 @@ model Ingredient {
   recipeId        String?
   name            String
   amount          Float
-  measurementType String
-  measurement     Float
+  unitType String
+  unit     String
 }
 
 model Cuisine {

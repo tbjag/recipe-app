@@ -1,6 +1,7 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 
+// Define cuisine type
 builder.prismaObject("Cuisine", {
   fields: (t) => ({
     id: t.exposeID("id"),
@@ -9,17 +10,17 @@ builder.prismaObject("Cuisine", {
   }),
 });
 
+// Gets all cuisines, for debugging
 builder.queryField("cuisines", (t) =>
   t.prismaField({
-    type: "Cuisine",
+    type: ["Cuisine"],
     resolve: async (query, root, args, ctx, info) => {
-      const cuisines = await prisma.cuisine.findMany({...query});
-      console.log(cuisines)
-      return cuisines
+      return await prisma.cuisine.findMany({...query});
     },
   })
 );
 
+// Gets a single cuisine by its Id
 builder.queryFields((t) => ({
   getCuisine: t.prismaField({
     type: 'Cuisine',
@@ -31,6 +32,24 @@ builder.queryFields((t) => ({
         ...query,
         where: {
           id: args.id,
+        },
+      });
+    },
+  }),
+}));
+
+// Creates a cuisine
+builder.mutationFields((t) => ({
+  createCuisine: t.prismaField({
+    type: 'Cuisine',
+    args: {
+      name: t.arg.string({required:true}),
+    },
+    resolve: async (query, root, args, ctx, info) => {
+      return prisma.cuisine.create({
+        ...query,
+        data: {
+          name: args.name,
         },
       });
     },

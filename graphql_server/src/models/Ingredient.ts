@@ -1,6 +1,7 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 
+// Define ingredient type
 builder.prismaObject("Ingredient", {
   fields: (t) => ({
     id: t.exposeID("id"),
@@ -12,6 +13,17 @@ builder.prismaObject("Ingredient", {
   }),
 });
 
+// Gets all ingredients, for debugging
+builder.queryField("getAllIngredients", (t) =>
+  t.prismaField({
+    type: ["Cuisine"],
+    resolve: async (query, root, args, ctx, info) => {
+      return await prisma.ingredient.findMany({...query});
+    },
+  })
+);
+
+// Gets a single ingredient by its Id
 builder.queryFields((t) => ({
   getIngredient: t.prismaField({
     type: 'Ingredient',
@@ -29,6 +41,7 @@ builder.queryFields((t) => ({
   }),
 }));
 
+// Creates 1 ingredient
 //pref take a list of ingredients
 builder.mutationFields((t) => ({
   createIngredient: t.prismaField({

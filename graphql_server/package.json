@@ -26,6 +26,6 @@
     "dev": "ts-node-dev --transpile-only --no-notify --exit-child src/server.ts",
     "devmon": "ts-node-dev --transpile-only --no-notify --exit-child src/server.ts",
     "generate": "ts-node --transpile-only src/schema.ts",
-    "seed": "ts-node --transpile-only src/test.ts"
+    "seed": "ts-node --transpile-only src/seed/seed.ts"
   }
 }

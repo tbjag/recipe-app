@@ -1,6 +1,8 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 
+
+// Define user type
 builder.prismaObject("User", {
   fields: (t) => ({
     id: t.exposeID("id"),
@@ -13,33 +15,19 @@ builder.prismaObject("User", {
   }),
 });
 
+// Gets all users, for debugging
 builder.queryField("users", (t) =>
   t.prismaField({
-    type: "User",
+    type: ["User"],
     resolve: async (query, root, args, ctx, info) => {
       return prisma.user.findMany({ ...query });
     },
   })
 );
 
-// builder.queryType({
-//   fields: (t) => ({
-//     getUser: t.prismaField({
-//       type: 'User',
-//       args:{
-//         id: t.arg.string({required:true})
-//       },
-//       resolve: async (query, root, args, ctx, info) =>
-//         prisma.user.findUniqueOrThrow({
-//           ...query,
-//           where: { id: args.id },
-//         }),
-//     }),
-//   }),
-// });
-
+// Gets a single user by its Id
 builder.queryFields((t) => ({
-  getUser2: t.prismaField({
+  getUser: t.prismaField({
     type: 'User',
     args: {
       id: t.arg.string({ required: true }),
@@ -55,7 +43,7 @@ builder.queryFields((t) => ({
   }),
 }));
 
-
+// Creates a user
 builder.mutationFields((t) => ({
   createUser: t.prismaField({
     type: "User",
@@ -72,7 +60,7 @@ builder.mutationFields((t) => ({
           email: args.email,
           firstName: args.firstName,
           lastName: args.lastName,
-          //role: args.role |
+          //role: args.role || null
         },
       });
     },
