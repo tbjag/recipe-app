@@ -6,10 +6,11 @@ generator client {
 }
 
 generator pothos {
-  provider = "prisma-pothos-types"
+  provider     = "prisma-pothos-types"
   clientOutput = "@prisma/client"
-  output = "./pothos-types.ts"
+  output       = "./pothos-types.ts"
 }
+
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
@@ -41,11 +42,11 @@ model Recipe {
 }
 
 model Ingredient {
-  id              String  @id @default(uuid())
-  recipe          Recipe? @relation(fields: [recipeId], references: [id])
-  recipeId        String?
-  name            String
-  amount          Float
+  id       String  @id @default(uuid())
+  recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId String?
+  name     String
+  amount   Float
   unitType String
   unit     String
 }
