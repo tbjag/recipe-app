@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Prisma, User, Recipe, Ingredient, Cuisine } from "@prisma/client";
+import type { Prisma, User, Recipe, Ingredient, Cuisine, UsersFavorite } from "@prisma/client";
 export default interface PrismaTypes {
     User: {
         Name: "User";
@@ -19,8 +19,8 @@ export default interface PrismaTypes {
                 Name: "Recipe";
             };
             favoriteRecipe: {
-                Shape: Recipe[];
-                Name: "Recipe";
+                Shape: UsersFavorite[];
+                Name: "UsersFavorite";
             };
         };
     };
@@ -46,8 +46,8 @@ export default interface PrismaTypes {
                 Name: "User";
             };
             favoritedBy: {
-                Shape: User[];
-                Name: "User";
+                Shape: UsersFavorite[];
+                Name: "UsersFavorite";
             };
             ingredients: {
                 Shape: Ingredient[];
@@ -90,6 +90,29 @@ export default interface PrismaTypes {
             recipe: {
                 Shape: Recipe[];
                 Name: "Recipe";
+            };
+        };
+    };
+    UsersFavorite: {
+        Name: "UsersFavorite";
+        Shape: UsersFavorite;
+        Include: Prisma.UsersFavoriteInclude;
+        Select: Prisma.UsersFavoriteSelect;
+        OrderBy: Prisma.UsersFavoriteOrderByWithRelationInput;
+        WhereUnique: Prisma.UsersFavoriteWhereUniqueInput;
+        Where: Prisma.UsersFavoriteWhereInput;
+        Create: {};
+        Update: {};
+        RelationName: "recipe" | "user";
+        ListRelations: never;
+        Relations: {
+            recipe: {
+                Shape: Recipe;
+                Name: "Recipe";
+            };
+            user: {
+                Shape: User;
+                Name: "User";
             };
         };
     };

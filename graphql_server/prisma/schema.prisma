@@ -17,26 +17,26 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(uuid())
+  id             String          @id @default(uuid())
   firstName      String
   lastName       String
-  email          String   @unique
-  role           Role     @default(BASIC)
-  writtenRecipe  Recipe[] @relation("WrittenRecipe")
-  favoriteRecipe Recipe[]
+  email          String          @unique
+  role           Role            @default(BASIC)
+  writtenRecipe  Recipe[]        @relation("WrittenRecipe")
+  favoriteRecipe UsersFavorite[]
 }
 
 model Recipe {
-  id          String       @id @default(uuid())
+  id          String          @id @default(uuid())
   title       String
   course      Course
-  cuisine     Cuisine      @relation(fields: [cuisineId], references: [id])
+  cuisine     Cuisine         @relation(fields: [cuisineId], references: [id])
   cuisineId   String
-  author      User         @relation("WrittenRecipe", fields: [authorId], references: [id])
+  author      User            @relation("WrittenRecipe", fields: [authorId], references: [id])
   authorId    String
-  favoritedBy User[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  favoritedBy UsersFavorite[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   ingredients Ingredient[]
   steps       String[]
 }
@@ -55,6 +55,16 @@ model Cuisine {
   id     String   @id @default(uuid())
   name   String   @unique
   recipe Recipe[]
+}
+
+model UsersFavorite {
+  recipe      Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId    String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  favoritedAt DateTime @default(now())
+
+  @@id([recipeId, userId])
 }
 
 enum Role {

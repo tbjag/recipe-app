@@ -1,7 +1,5 @@
-import { InputObjectRef } from "@pothos/core";
 import { builder } from "../builder";
 import { prisma } from "../db";
-import { Prisma } from "@prisma/client";
 
 // Define recipe type
 builder.prismaObject("Recipe", {
@@ -66,8 +64,6 @@ const RecipeInput = builder.inputType("RecipeInput", {
   }),
 });
 
-//const RecipeCreate = InputObjectRef<Prisma.Recipe
-
 // Creates recipe
 builder.mutationFields((t) => ({
   createRecipe: t.prismaField({
@@ -78,7 +74,14 @@ builder.mutationFields((t) => ({
     resolve: async (query, root, args, ctx, info) => {
       return await prisma.recipe.create({
         ...query,
-        data: args.input,
+        data: {
+          title: args.input.title,
+          course: args.input.course, //TODO convert to enum
+          cuisineId: args.input.cuisineId,
+          authorId: args.input.authorId,
+          steps: args.input.steps,
+          ingredients: { create: args.input.ingredients },
+        },
         include: { ingredients: true },
       });
     },

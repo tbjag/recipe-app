@@ -6,7 +6,7 @@ builder.prismaObject("Cuisine", {
   fields: (t) => ({
     id: t.exposeID("id"),
     name: t.exposeString("name"),
-    recipe: t.relation('recipe')
+    recipe: t.relation("recipe"),
   }),
 });
 
@@ -15,7 +15,7 @@ builder.queryField("cuisines", (t) =>
   t.prismaField({
     type: ["Cuisine"],
     resolve: async (query, root, args, ctx, info) => {
-      return await prisma.cuisine.findMany({...query});
+      return await prisma.cuisine.findMany({ ...query });
     },
   })
 );
@@ -23,7 +23,7 @@ builder.queryField("cuisines", (t) =>
 // Gets a single cuisine by its Id
 builder.queryFields((t) => ({
   getCuisine: t.prismaField({
-    type: 'Cuisine',
+    type: "Cuisine",
     args: {
       id: t.arg.string({ required: true }),
     },
@@ -38,18 +38,24 @@ builder.queryFields((t) => ({
   }),
 }));
 
+const CuisineInput = builder.inputType("CuisineInput", {
+  fields: (t) => ({
+    name: t.string({ required: true }),
+  }),
+});
+
 // Creates a cuisine
 builder.mutationFields((t) => ({
   createCuisine: t.prismaField({
-    type: 'Cuisine',
+    type: "Cuisine",
     args: {
-      name: t.arg.string({required:true}),
+      input: t.arg({ type: CuisineInput, required: true }),
     },
     resolve: async (query, root, args, ctx, info) => {
       return prisma.cuisine.create({
         ...query,
         data: {
-          name: args.name,
+          name: args.input.name
         },
       });
     },
