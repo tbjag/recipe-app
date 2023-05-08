@@ -11,3 +11,4 @@ const server = createServer(yoga)
 server.listen(port, () => {
   console.info('Server is running on http://localhost:3000/graphql')
 })
+

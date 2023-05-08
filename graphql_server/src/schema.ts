@@ -1,9 +1,9 @@
 import { builder } from "./builder";
 
-import "./models/User"
-import "./models/Cuisine"
-import "./models/Ingredient"
-import "./models/Recipe"
-import "./models/UsersFavorite"
+import "./schema/User"
+import "./schema/Cuisine"
+import "./schema/Ingredient"
+import "./schema/Recipe"
+import "./schema/UsersFavorite"
 
 export const schema = builder.toSchema({})

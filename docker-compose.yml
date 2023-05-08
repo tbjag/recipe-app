@@ -1,9 +1,20 @@
+version: '3'
 services:
-  app:
-    build: .
-    container_name: python-server
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
-    ports:
-      - 8000:8000
+  graphql:
+    depends_on:
+      - postgres
+    build: ./graphql_server
+    command: sh -c 'yarn run dev'
+    ports: 
+      - '3000:3000'
+    working_dir: /graphql
     volumes:
-      - .:/code
+      - ./graphql_server:/graphql
+  postgres: 
+    image: postgres:14.1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
+

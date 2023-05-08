@@ -1,17 +1,11 @@
 FROM node:18-alpine
-ENV PORT 3200
+ENV PORT 3000
 
 WORKDIR /code
-COPY ./package.json ./package-lock.json /code/
+COPY ./package.json ./yarn.lock /code/
 COPY ./ /code/
 
-# RUN apk update \
-#   && apk add curl python --no-cache --virtual build-dependencies build-base gcc \
-#   && npm i -g npm@latest \
-#   && npm i
-
-# HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-#   CMD curl -f http://localhost:$PORT/version || exit 1
+RUN yarn install
+RUN yarn prisma generate
 
 EXPOSE ${PORT}
-#CMD [ "npm", "start" ]
