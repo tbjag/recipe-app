@@ -1,14 +1,24 @@
-import { createServer } from 'node:http'
-import { createYoga } from 'graphql-yoga'
-import {schema} from './schema'
+// import { createServer } from 'node:http'
+// import { createYoga } from 'graphql-yoga'
+import { schema } from "./schema";
 
-const port = Number(process.env.API_PORT) || 3000;
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
-const yoga = createYoga({ schema })
- 
-const server = createServer(yoga)
+const port = Number(process.env.API_PORT) || 4000;
 
-server.listen(port, () => {
-  console.info('Server is running on http://localhost:3000/graphql')
-})
+// const yoga = createYoga({ schema })
 
+// const server = createServer(yoga)
+
+// server.listen(port, () => {
+//   console.info('Server is running on http://localhost:3000/graphql')
+// })
+
+const server = new ApolloServer({
+  schema,
+});
+
+startStandaloneServer(server, { listen: { port: port } }).then((t) => {
+  console.log(`🚀  Server ready at: ${t.url}`);
+});
