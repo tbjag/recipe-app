@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Recipe {
+  id          String          @id @default(uuid())
+  title       String
+  course      String //replace with enum?
+  cuisine     Cuisine         @relation(fields: [cuisineId], references: [id], onDelete: Cascade)
+  cuisineId   String
+  author      User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String
+  favoritedBy UsersFavorite[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  ingredients Ingredient[]
+  steps       String[]
+}
+
+model UsersFavorite {
+  recipe      Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId    String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  favoritedAt DateTime @default(now())
+
+  @@id([recipeId, userId])
+}
+
+model Cuisine {
+  id     String   @id @default(uuid())
+  name   String   @unique
+  recipe Recipe[]
+}
+
+model Ingredient {
+  id       String  @id @default(uuid())
+  recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId String?
+  name     String
+  amount   Float
+  unitType String
+  unit     String
+}
+
+// enum Role {
+//   BASIC
+//   ADMIN
+//   WRITER
+// }
+
+// enum Course {
+//   BREAKFAST
+//   LUNCH
+//   DINNER
+//   SNACK
+//   DESSERT
+// }
+
+// Necessary for Next auth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? // @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String?         @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  // Non Next Auth
+  favorites     UsersFavorite[]
+  written       Recipe[]
+  //add role?
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
