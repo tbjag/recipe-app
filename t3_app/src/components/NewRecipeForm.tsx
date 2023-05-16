@@ -13,12 +13,13 @@ interface Recipe {
 }
 
 export default function NewRecipeForm() {
-    const session = useSession();
-    if (session.status !== 'authenticated') {
-        return <></>;
-    } else {
-        return <Form />;
-    }
+    //const session = useSession();
+    // if (session.status !== 'authenticated') {
+    //     return <></>;
+    // } else {
+    //     return <Form />;
+    // }
+    return <Form/>;
 }
 
 function Form() {

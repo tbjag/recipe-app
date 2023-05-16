@@ -41,6 +41,7 @@ https://www.youtube.com/watch?v=jqVm5_G1ZEE
 ## Next Steps 
 - figure out why fast reload does not work
 - build out recipe view - add ingredient components
+- switch from pages to /app next js docs
 - ''' cuisine creation
 - ''' cuisine dropdown for recipe create
 - ''' profile page - view posted recipes

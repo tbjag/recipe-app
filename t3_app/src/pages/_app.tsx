@@ -11,7 +11,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
     pageProps: { session, ...pageProps },
 }) => {
     return (
-        <SessionProvider session={session}>
+        // <SessionProvider session={session}>
+        <>
             <Head>
                 <title>Recipe</title>
                 <meta name="description" content="recipe app"></meta>
@@ -22,7 +23,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
                     <Component {...pageProps} />
                 </div>
             </div>
-        </SessionProvider>
+            </>
+        //</SessionProvider> 
     );
 };
 
