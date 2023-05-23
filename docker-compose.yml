@@ -1,15 +1,15 @@
 version: '3'
 services:
-  graphql:
-    depends_on:
-      - postgres
-    build: ./graphql_server
-    command: sh -c 'yarn run dev'
-    ports: 
-      - '3000:3000'
-    working_dir: /graphql
-    volumes:
-      - ./graphql_server:/graphql
+  # graphql:
+  #   depends_on:
+  #     - postgres
+  #   build: ./graphql_server
+  #   command: sh -c 'yarn run dev'
+  #   ports: 
+  #     - '3000:3000'
+  #   working_dir: /graphql
+  #   volumes:
+  #     - ./graphql_server:/graphql
   postgres: 
     image: postgres:14.1-alpine
     ports:

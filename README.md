@@ -3,9 +3,11 @@
 ## WIP Under Construction
 
 ## Components
-t3 app
-python microservice
+- Next JS Frontend
+- FastAPI Backend
 
 ## Running project
+
+### Run Database
 - docker compose up (-d)
 - (docker compose down) ctrl + c 
