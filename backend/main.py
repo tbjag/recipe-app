@@ -15,12 +15,14 @@ database = databases.Database(DATABASE_URL)
 
 metadata = sqlalchemy.MetaData()
 
-notes = sqlalchemy.Table(
-    "notes",
+recipes = sqlalchemy.Table(
+    "recipes",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("text", sqlalchemy.String),
-    sqlalchemy.Column("completed", sqlalchemy.Boolean),
+    sqlalchemy.Column("title", sqlalchemy.String),
+    sqlalchemy.Column("instructions", sqlalchemy.String),
+    sqlalchemy.Column("ingredients", sqlalchemy.String),
+    sqlalchemy.Column("notes", sqlalchemy.String),
 )
 
 
@@ -30,15 +32,19 @@ engine = sqlalchemy.create_engine(
 # metadata.create_all(engine)
 
 
-class NoteIn(BaseModel):
-    text: str
-    completed: bool
+class RecipeIn(BaseModel):
+    title: str
+    instructions: str
+    ingredients: str
+    notes: str
 
 
-class Note(BaseModel):
-    id: int
-    text: str
-    completed: bool
+class Recipe(BaseModel):
+    id: str
+    title: str
+    instructions: str
+    ingredients: str
+    notes: str
 
 
 app = FastAPI()
@@ -68,15 +74,15 @@ async def shutdown():
     await database.disconnect()
 
 
-@app.get("/notes/", response_model=List[Note])
-async def read_notes():
-    query = notes.select()
+@app.get("/recipes/", response_model=List[Recipe])
+async def read_recipes():
+    query = recipes.select()
     return await database.fetch_all(query)
 
 
-@app.post("/notes/", response_model=Note)
-async def create_note(note: NoteIn):
-    print(note)
-    query = notes.insert().values(text=note.text, completed=note.completed)
+@app.post("/recipes/", response_model=Recipe)
+async def create_recipe(recipe: RecipeIn):
+    print(recipe)
+    query = recipes.insert().values(title=recipe.title, instructions=recipe.instructions, ingredients=recipe.ingredients, notes=recipe.notes)
     last_record_id = await database.execute(query)
-    return {**note.dict(), "id": last_record_id}
+    return {**recipe.dict(), "id": last_record_id}
