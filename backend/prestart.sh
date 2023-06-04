@@ -1,9 +1,10 @@
 #! /usr/bin/env bash
 
-cd src
 # Let the DB start
-python3 ./backend_pre_start.py
-cd .. 
+python ./app/backend_pre_start.py
 
 # Run migrations
-alembic upgrade head    <---- ALEMBIC MIGRATION COMMAND
+alembic upgrade head
+
+# Create initial data in DB
+python ./app/initial_data.py
