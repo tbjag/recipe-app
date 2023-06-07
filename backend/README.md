@@ -10,3 +10,6 @@
 ## Running the Project
 - After database changes run `poetry run ./prestart.sh`
 - Run `poetry run ./run.sh`
+
+
+
