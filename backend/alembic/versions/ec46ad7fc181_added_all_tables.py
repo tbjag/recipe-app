@@ -35,6 +35,7 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("label", sa.String(length=256), nullable=False),
         sa.Column("url", sa.String(length=256), nullable=True),
+        sa.Column("notes", sa.String(length=256), nullable=True),
         sa.Column("source", sa.String(length=256), nullable=True),
         sa.Column("submitter_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
@@ -45,6 +46,7 @@ def upgrade():
     )
     op.create_index(op.f("ix_recipe_id"), "recipe", ["id"], unique=False)
     op.create_index(op.f("ix_recipe_url"), "recipe", ["url"], unique=False)
+    op.create_index(op.f("ix_recipe_notes"), "recipe", ["notes"], unique=False)
     # ### end Alembic commands ###
 
 
