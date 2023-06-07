@@ -14,18 +14,21 @@ RECIPES = [
         "label": "Chicken Vesuvio",
         "source": "Serious Eats",
         "url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
+        "notes": "test one",
     },
     {
         "id": 2,
         "label": "Chicken Paprikash",
         "source": "No Recipes",
         "url": "http://norecipes.com/recipe/chicken-paprikash/",
+        "notes": "test two",
     },
     {
         "id": 3,
         "label": "Cauliflower and Tofu Curry Recipe",
         "source": "Serious Eats",
-        "url": "http://www.seriouseats.com/recipes/2011/02/cauliflower-and-tofu-curry-recipe.html",  # noqa
+        "url": "http://www.seriouseats.com/recipes/2011/02/cauliflower-and-tofu-curry-recipe.html",
+        "notes": "test three",  # noqa
     },
 ]
 
@@ -61,6 +64,7 @@ def init_db(db: Session) -> None:
                     label=recipe["label"],
                     source=recipe["source"],
                     url=recipe["url"],
+                    notes=recipe["notes"],
                     submitter_id=user.id,
                 )
                 crud.recipe.create(db, obj_in=recipe_in)

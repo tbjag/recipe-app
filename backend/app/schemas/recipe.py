@@ -7,12 +7,14 @@ class RecipeBase(BaseModel):
     label: str
     source: str
     url: HttpUrl
+    notes: str
 
 
 class RecipeCreate(RecipeBase):
     label: str
     source: str
     url: HttpUrl
+    notes: str
     submitter_id: int
 
 
@@ -23,6 +25,7 @@ class RecipeUpdate(RecipeBase):
 class RecipeUpdateRestricted(BaseModel):
     id: int
     label: str
+    notes: str
 
 
 # Properties shared by models stored in DB
