@@ -3,58 +3,94 @@
 import Head from 'next/head';
 import { useState, useEffect, SetStateAction, ChangeEvent } from 'react';
 
-interface Note {
+
+interface Recipe{
   id: string;
-  text: string;
-  completed: boolean;
+  title: string;
+  instructions: string;
+  ingredients: string;
+  notes: string;
 }
 
-export default function Notes(): JSX.Element {
-  const [note, setNote] = useState<string>('');
-  const [notes, setNotes] = useState<Note[]>([]);
+export default function Recipes(): JSX.Element {
+  
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipe, setRecipe] = useState<Recipe>({
+    id: '',
+    title: '',
+    instructions: '',
+    ingredients: '',
+    notes: '',
+  });
 
-  useEffect(() => {
-    async function fetchNotes() {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notes/`);
+  useEffect(() => { //getting data
+    async function fetchRecipes() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/`);
       const json = await res.json();
       console.log(json);
-      setNotes(json);
+      setRecipes(json);
     }
-    fetchNotes();
+    fetchRecipes()
+      .catch(console.error);
   }, []);
 
-  function handleChange(e: ChangeEvent<HTMLTextAreaElement>): void {
-    setNote(e.target.value);
+  function handleChange(e: ChangeEvent<HTMLTextAreaElement>,field:keyof Recipe): void {
+    setRecipe((prevRecipe)=>({
+      ...prevRecipe,
+      [field]:e.target.value,
+    }));
   }
 
-  async function handleSubmit() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notes/`, {
+  async function handleSubmit() { //sending data
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        text: note,
-        completed: false,
-      }),
+      body: JSON.stringify(recipe),
     });
     const json = await res.json();
-    setNotes([...notes, json]);
+    setRecipes((prevRecipes)=> [...prevRecipes, json]);
   }
+
+  const recipes_array = Array.from(recipes);
+  
 
   return (
     <div>
       <Head>
-        <title>Notes</title>
+        <title className= "font-bold mb-3 text-4x2">Recipes</title>
       </Head>
       <div className="container mx-auto p-10 m-10">
         <div className="flex flex-col">
-          <h1 className="font-bold mb-3 text-2xl">Notes</h1>
-          <textarea
-            value={note}
-            onChange={handleChange}
-            className="border-2 p-2 rounded-md text-black"
-          ></textarea>
+          <h1 className="font-bold mb-3 text-2xl">Recipe Title
+            <textarea
+              value={recipe.title}
+              onChange={(e) => handleChange(e, 'title')}
+              className="border-2 p-2 rounded-md text-black"
+            ></textarea>
+          </h1>
+          <h1 className="font-bold mb-3 text-2xl">Ingredients
+            <textarea
+              value={recipe.ingredients}
+              onChange={(e) =>handleChange(e, 'ingredients')}
+              className="border-2 p-2 rounded-md text-black"
+            ></textarea>
+          </h1>
+          <h1 className="font-bold mb-3 text-2xl">Instructions
+            <textarea
+              value={recipe.instructions}
+              onChange={(e) => handleChange(e, 'instructions')}
+              className="border-2 p-2 rounded-md text-black"
+            ></textarea>
+          </h1>
+          <h1 className="font-bold mb-3 text-2xl">Notes
+            <textarea
+              value={recipe.notes}
+              onChange={(e) => handleChange(e, 'notes')}
+              className="border-2 p-2 rounded-md text-black"
+            ></textarea>
+          </h1>
           <div className="mx-auto p-3 mt-5">
             <button
               onClick={handleSubmit}
@@ -65,13 +101,13 @@ export default function Notes(): JSX.Element {
           </div>
           <div>
             <ul>
-              {notes &&
-                notes.map((note) => (
+              {recipes &&
+                recipes_array.map((r) => (
                   <li
-                    key={note.id}
+                    key={r.id}
                     className="bg-yellow-100 my-3 py-3 px-4 border-yellow-200 border-2 rounded-md text-black"
                   >
-                    {note.text}
+                    Title: {r.title}, Ingredients: {r.ingredients}, Instructions: {r.instructions}, Notes: {r.notes}
                   </li>
                 ))}
             </ul>
@@ -82,5 +118,5 @@ export default function Notes(): JSX.Element {
   );
 }
 
-Notes['useClient'] = true; // Marking the Notes component as a client entry
+Recipes['useClient'] = true; // Marking the Notes component as a client entry
 export {}; // Ensuring this file is treated as a module
