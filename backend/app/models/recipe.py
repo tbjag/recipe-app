@@ -12,3 +12,9 @@ class Recipe(Base):
     notes = Column(String(256), nullable=False)
     submitter_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     submitter = relationship("User", back_populates="recipes")
+    ingredients = relationship(
+        "Ingredient",
+        cascade="all,delete-orphan",
+        back_populates="submitter",
+        uselist=True,
+    )

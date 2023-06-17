@@ -1,6 +1,6 @@
 from pydantic import BaseModel, HttpUrl
-
-from typing import Sequence
+from app.schemas.ingredient import Ingredient
+from typing import Sequence, List
 
 
 class RecipeBase(BaseModel):
@@ -8,6 +8,7 @@ class RecipeBase(BaseModel):
     source: str
     url: HttpUrl
     notes: str
+    ingredients: List[Ingredient]
 
 
 class RecipeCreate(RecipeBase):
@@ -16,6 +17,7 @@ class RecipeCreate(RecipeBase):
     url: HttpUrl
     notes: str
     submitter_id: int
+    ingredients: List[Ingredient]
 
 
 class RecipeUpdate(RecipeBase):
