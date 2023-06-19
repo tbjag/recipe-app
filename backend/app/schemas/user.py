@@ -1,38 +1,58 @@
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel, EmailStr
-
+from pydantic import BaseModel, StrictBool, validator
 
 class UserBase(BaseModel):
-    first_name: Optional[str]
-    surname: Optional[str]
-    email: Optional[EmailStr] = None
-    is_superuser: bool = False
+    username: str
+    profile: str
+    email: str
+    disabled: StrictBool = False
 
 
-# Properties to receive via API on creation
 class UserCreate(UserBase):
-    email: EmailStr
     password: str
 
+    @validator("username")
+    def validate_username(cls: Any, username: str, **kwargs: Any) -> Any:
+        if len(username) <= 4:
+            raise ValueError("Username can't be empty")
+        return username
 
-# Properties to receive via API on update
-class UserUpdate(UserBase):
-    ...
+    @validator("email")
+    def validate_email(cls: Any, email: str, **kwargs: Any) -> Any:
+        if len(email) == 0:
+            raise ValueError("An email is required")
+        return email
+
+    @validator("profile")
+    def validate_profile(cls: any, profile: str, **kwargs: Any) -> Any:
+        if len(profile) == 0:
+            raise ValueError("A profile is required")
+        return profile
 
 
-class UserInDBBase(UserBase):
+class User(UserBase):
     id: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        orm_mode: bool = True
 
 
-# Additional properties stored in DB but not returned by API
-class UserInDB(UserInDBBase):
+class UserInDB(User):
     hashed_password: str
 
 
-# Additional properties to return via API
-class User(UserInDBBase):
-    ...
+class Users(User):
+    id: int
+
+
+class UserUpdate(UserBase):
+    password: Optional[str]
+
+    class Config:
+        orm_mode: bool = True
+
+
+class UserPassword(BaseModel):
+    password: Optional[str] = None
+    # pass
