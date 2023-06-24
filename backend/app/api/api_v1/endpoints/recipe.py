@@ -12,7 +12,7 @@ from app.schemas.recipe import (
     Recipe,
     RecipeCreate,
     RecipeSearchResults,
-    RecipeUpdateRestricted,
+    RecipeUpdate,
 )
 from app.models.user import User
 
@@ -87,15 +87,15 @@ def create_recipe(
         raise HTTPException(
             status_code=403, detail=f"You can only submit recipes as yourself"
         )
+    #recipe = crud.recipe.create(db=db, obj_in=recipe_in)
     recipe = crud.recipe.create(db=db, obj_in=recipe_in)
-
     return recipe
 
 
 @router.put("/", status_code=201, response_model=Recipe)
 def update_recipe(
     *,
-    recipe_in: RecipeUpdateRestricted,
+    recipe_in: RecipeUpdate,
     db: Session = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user),
 ) -> dict:
@@ -115,37 +115,3 @@ def update_recipe(
 
     updated_recipe = crud.recipe.update(db=db, db_obj=recipe, obj_in=recipe_in)
     return updated_recipe
-
-
-async def get_reddit_top_async(subreddit: str) -> list:
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"https://www.reddit.com/r/{subreddit}/top.json?sort=top&t=day&limit=5",
-            headers={"User-agent": "recipe bot 0.1"},
-        )
-
-    subreddit_recipes = response.json()
-    subreddit_data = []
-    for entry in subreddit_recipes["data"]["children"]:
-        score = entry["data"]["score"]
-        title = entry["data"]["title"]
-        link = entry["data"]["url"]
-        subreddit_data.append(f"{str(score)}: {title} ({link})")
-    return subreddit_data
-
-
-@router.get("/ideas/async")
-async def fetch_ideas_async(
-    user: User = Depends(deps.get_current_active_superuser),
-) -> dict:
-    results = await asyncio.gather(
-        *[get_reddit_top_async(subreddit=subreddit) for subreddit in RECIPE_SUBREDDITS]
-    )
-    return dict(zip(RECIPE_SUBREDDITS, results))
-
-
-@router.get("/ideas/")
-def fetch_ideas(reddit_client: RedditClient = Depends(deps.get_reddit_client)) -> dict:
-    return {
-        key: reddit_client.get_reddit_top(subreddit=key) for key in RECIPE_SUBREDDITS
-    }
