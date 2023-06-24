@@ -1,23 +1,22 @@
 from fastapi import APIRouter
-from app import schemas
-
+from typing import Any, Optional, List
+from app.schemas import Recipe, RecipeCreate
+from app.services.recipe import get_all_recipes, get_recipe, create_recipe
 router = APIRouter()
 
-i = schemas.IngredientCreate(
-    name = 'blah',
-    quantity=3.9,
-    unit_type='meow',
-    notes='meh'
-)
+@router.get("/", status_code=200, response_model=List[Recipe])
+def fetch_recipes() -> Any:
+    recipes = get_all_recipes()
+    return recipes
 
-t = schemas.RecipeCreate(
-    title = 'test',
-    summary = 'test2',
-    ingredients=[i],
-    instructions = ['test3'],
-    notes = 'notes'
-)
+@router.get("/{recipe_id}", status_code=200, response_model=Recipe)
+def fetch_recipe(recipe_id: str) -> Any:
+    recipe = get_recipe(recipe_id)
+    return recipe
 
-@router.get("/test", status_code=200, response_model=schemas.Recipe)
-def fetch_recipe():
-    return t
+@router.post("/", status_code=201, response_model=Recipe)
+def create_user_recipe(recipe: RecipeCreate) -> Any:
+    new_recipe = create_recipe(recipe)
+    return new_recipe
+
+## add update

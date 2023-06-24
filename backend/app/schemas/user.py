@@ -55,4 +55,3 @@ class UserUpdate(UserBase):
 
 class UserPassword(BaseModel):
     password: Optional[str] = None
-    # pass

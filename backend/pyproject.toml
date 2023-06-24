@@ -14,8 +14,8 @@ alembic = "^1.11.1"
 psycopg2 = "^2.9.6"
 fastapi-pagination = "^0.12.4"
 python-slugify = "^8.0.1"
-passlib = "^1.7.4"
-python-jose = "^3.3.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 sqlalchemy = "^2.0.16"
 pydantic = {extras = ["dotenv"], version = "^1.10.9"}
 

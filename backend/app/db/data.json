@@ -1,0 +1,131 @@
+[
+  {
+    "title": "Chocolate Chip Cookies",
+    "summary": "Classic homemade chocolate chip cookies",
+    "ingredients": [
+      {
+        "name": "all-purpose flour",
+        "quantity": 2,
+        "unit_type": "cups",
+        "notes": ""
+      },
+      {
+        "name": "unsalted butter",
+        "quantity": 1,
+        "unit_type": "cup",
+        "notes": ""
+      },
+      {
+        "name": "granulated sugar",
+        "quantity": 1,
+        "unit_type": "cup",
+        "notes": ""
+      },
+      { "name": "brown sugar", "quantity": 1, "unit_type": "cup", "notes": "" },
+      { "name": "eggs", "quantity": 2, "unit_type": "", "notes": "" },
+      {
+        "name": "vanilla extract",
+        "quantity": 2,
+        "unit_type": "teaspoons",
+        "notes": ""
+      },
+      {
+        "name": "baking soda",
+        "quantity": 1,
+        "unit_type": "teaspoon",
+        "notes": ""
+      },
+      { "name": "salt", "quantity": 1, "unit_type": "teaspoon", "notes": "" },
+      {
+        "name": "semisweet chocolate chips",
+        "quantity": 2,
+        "unit_type": "cups",
+        "notes": ""
+      }
+    ],
+    "instructions": [
+      "Preheat the oven to 350°F (175°C).",
+      "In a large bowl, cream together the butter, granulated sugar, and brown sugar until smooth.",
+      "Beat in the eggs one at a time, then stir in the vanilla extract.",
+      "Dissolve baking soda in hot water and add it to the batter along with salt.",
+      "Mix in the flour until just blended.",
+      "Fold in the chocolate chips.",
+      "Drop rounded tablespoons of dough onto ungreased baking sheets.",
+      "Bake for 10 to 12 minutes, or until edges are golden brown.",
+      "Cool on wire racks."
+    ],
+    "notes": "You can also add nuts or dried fruits to the cookie dough if desired."
+  },
+  {
+    "title": "Apple Cinnamon Pie",
+    "summary": "A delicious homemade pie with a perfect balance of sweet apples and warm cinnamon flavors.",
+    "ingredients": [
+      {
+        "name": "apples",
+        "quantity": 6,
+        "unit_type": "cups",
+        "notes": "peeled, cored, and thinly sliced"
+      },
+      {
+        "name": "granulated sugar",
+        "quantity": 1,
+        "unit_type": "cup",
+        "notes": ""
+      },
+      {
+        "name": "all-purpose flour",
+        "quantity": 4,
+        "unit_type": "cup",
+        "notes": ""
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 1,
+        "unit_type": "teaspoon",
+        "notes": ""
+      },
+      {
+        "name": "salt",
+        "quantity": 1,
+        "unit_type": "teaspoon",
+        "notes": ""
+      },
+      {
+        "name": "unsalted butter",
+        "quantity": 2,
+        "unit_type": "tablespoons",
+        "notes": "cut into small pieces"
+      },
+      {
+        "name": "pre-made pie crusts",
+        "quantity": 1,
+        "unit_type": "package",
+        "notes": "for the bottom and top crusts"
+      },
+      {
+        "name": "milk",
+        "quantity": 1,
+        "unit_type": "tablespoon",
+        "notes": ""
+      },
+      {
+        "name": "granulated sugar",
+        "quantity": 1,
+        "unit_type": "tablespoon",
+        "notes": "for sprinkling"
+      }
+    ],
+    "instructions": [
+      "Preheat your oven to 375°F (190°C).",
+      "In a large bowl, combine the sliced apples, granulated sugar, flour, cinnamon, and salt. Toss everything together until the apples are evenly coated.",
+      "Place one pie crust into a 9-inch pie dish. Press it gently against the bottom and sides.",
+      "Pour the apple mixture into the pie crust, and dot the top with the small pieces of butter.",
+      "Roll out the second pie crust and place it on top of the apple filling. Trim any excess crust and seal the edges by crimping with your fingers or a fork. Cut a few small slits on the top crust to allow steam to escape.",
+      "Brush the top crust with milk and sprinkle granulated sugar over it.",
+      "Place the pie on a baking sheet and bake for about 50-60 minutes, or until the crust is golden brown and the filling is bubbling.",
+      "Remove the pie from the oven and let it cool on a wire rack for at least 2 hours before serving.",
+      "Serve the apple cinnamon pie on its own or with a scoop of vanilla ice cream."
+    ],
+    "notes": "For best results, choose a mix of tart and sweet apples such as Granny Smith and Honeycrisp. You can also adjust the amount of sugar and cinnamon according to your taste preference."
+  }
+]

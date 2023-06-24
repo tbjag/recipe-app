@@ -52,6 +52,7 @@ class IngredientInDB(IngredientBase):
 class Ingredient(IngredientBase):
     pass
 
+##Recipe
 class RecipeBase(BaseModel):
     title: str
     summary: str
