@@ -3,7 +3,6 @@
 import Head from 'next/head';
 import { useState, useEffect, SetStateAction, ChangeEvent } from 'react';
 
-
 interface Recipe{
   id: string;
   title: string;
@@ -44,6 +43,18 @@ export default function Recipes(): JSX.Element {
   async function handleSubmit() { //sending data
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(recipe),
+    });
+    const json = await res.json();
+    setRecipes((prevRecipes)=> [...prevRecipes, json]);
+  }
+
+  async function handleDelete() { //delete data
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -122,6 +133,14 @@ export default function Recipes(): JSX.Element {
                     </div>
                     <div>
                       <span className="font-bold">Notes:</span> {r.notes}
+                    </div>
+                    <div className="mx-auto p-2 mt-2">
+                      <button
+                        onClick={handleDelete}
+                        className="bg-red-500 hover:bg-red-700 p-3 text-white rounded-md transition-colors duration-300"
+                      >
+                      Delete
+                      </button>
                     </div>
                   </li>
                 ))}
