@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link'
 import Head from 'next/head';
 import { useState, useEffect, SetStateAction, ChangeEvent } from 'react';
 
@@ -68,13 +69,23 @@ export default function Recipes(): JSX.Element {
   
 
   return (
+
+  
   <div className="container mx-auto sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3 p-10 m-10">
+    <header className="bg-white shadow">
+        <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between py-4">
+            <a className="bg-gray-200 hover:bg-gray-400 p-3 text-black rounded-md transition-colors duration-300 text-gray-900 font-semibold text-lg transition-colors duration-300"><Link href="/">Home</Link></a>
+            <a className="bg-gray-200 hover:bg-gray-400 p-3 text-black rounded-md transition-colors duration-300 text-gray-900 font-semibold text-lg transition-colors duration-300"><Link href="/aboutus">About Us</Link></a>
+            <a className="bg-gray-200 hover:bg-gray-400 p-3 text-black rounded-md transition-colors duration-300 text-gray-900 font-semibold text-lg transition-colors duration-300"><Link href="/signup">Sign Up</Link></a>
+        </div>
+        </div>
+    </header>
     <div>
-      <Head>
-        <title className="font-bold mb-3 text-4xl">Recipes</title>
-      </Head>
       <div className="container mx-auto p-10 m-10">
         <div className="flex flex-col">
+          <h1 className="font-bold mb-3 text-2xl">{recipe.id}</h1>
+
           <h1 className="font-bold mb-3 text-2xl">Recipe Title</h1>
           <textarea
             value={recipe.title}
@@ -111,7 +122,7 @@ export default function Recipes(): JSX.Element {
             Submit
             </button>
           </div>
-
+          
           <div>
             <ul>
               {recipes &&
@@ -120,6 +131,9 @@ export default function Recipes(): JSX.Element {
                     key={r.id}
                     className="bg-yellow-100 my-3 py-3 px-4 border-yellow-200 border-2 rounded-md text-black"
                   >
+                    <div>
+                      <span className="font-bold">Id:</span> {r.id}
+                    </div>
                     <div>
                       <span className="font-bold">Title:</span> {r.title}
                     </div>
@@ -153,5 +167,3 @@ export default function Recipes(): JSX.Element {
 );
 }
 
-Recipes['useClient'] = true; // Marking the Notes component as a client entry
-export {}; // Ensuring this file is treated as a module
