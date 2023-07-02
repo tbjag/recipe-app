@@ -11,24 +11,30 @@ logger = logging.getLogger(__name__)
 RECIPES = [
     {
         "id": 1,
-        "label": "Chicken Vesuvio",
-        "source": "Serious Eats",
-        "url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
-        "notes": "test one",
+        "title": "Chicken Vesuvio",
+        "summary": "Serious Eats",
+        "img_url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
+        "ingredients" : [{"name": "chicken", "quantity": 1.0, "unit_type": "cup", "notes" : "sd"}],
+        "instructions": "test one",
+        "notes": "note note"
     },
     {
         "id": 2,
-        "label": "Chicken Paprikash",
-        "source": "No Recipes",
-        "url": "http://norecipes.com/recipe/chicken-paprikash/",
-        "notes": "test two",
+        "title": "Chicken Parm",
+        "summary": "Kenji Lopez Alt",
+        "img_url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
+        "ingredients" : [{"name": "chicken", "quantity": 1.0, "unit_type": "cup", "notes" : "sd"}],
+        "instructions": "test two",
+        "notes": "note note"
     },
     {
         "id": 3,
-        "label": "Cauliflower and Tofu Curry Recipe",
-        "source": "Serious Eats",
-        "url": "http://www.seriouseats.com/recipes/2011/02/cauliflower-and-tofu-curry-recipe.html",
-        "notes": "test three",  # noqa
+        "title": "Chicken Catectory",
+        "summary": "NYTimes",
+        "img_url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
+        "ingredients" : [{"name": "chicken", "quantity": 1.0, "unit_type": "cup", "notes" : "sd"}],
+        "instructions": "test three",
+        "notes": "note note"
     },
 ]
 
@@ -60,10 +66,22 @@ def init_db(db: Session) -> None:
             )
         if not user.recipes:
             for recipe in RECIPES:
+                ingredients_in = []
+                for ingredient in recipe["ingredients"]:
+                    ingredients_in.append(
+                        schemas.IngredientCreate(
+                            name=ingredient["name"],
+                            quantity=ingredient["quantity"],
+                            unit_type=ingredient["unit_type"],
+                            notes=ingredient["notes"]
+                        )
+                    )
                 recipe_in = schemas.RecipeCreate(
-                    label=recipe["label"],
-                    source=recipe["source"],
-                    url=recipe["url"],
+                    title=recipe["title"],
+                    img_url=recipe["img_url"],
+                    summary=recipe["summary"],
+                    ingredients=ingredients_in,
+                    instructions=recipe["instructions"],
                     notes=recipe["notes"],
                     submitter_id=user.id,
                 )

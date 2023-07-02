@@ -1,32 +1,31 @@
 from pydantic import BaseModel, HttpUrl
-
-from typing import Sequence
-
+from app.schemas.ingredient import Ingredient
+from typing import Sequence, List
 
 class RecipeBase(BaseModel):
-    label: str
-    source: str
-    url: HttpUrl
+    title: str
+    img_url: HttpUrl #TODO change later to storing images
+    summary: str
+    ingredients: List[Ingredient]
+    instructions: str
     notes: str
 
-
 class RecipeCreate(RecipeBase):
-    label: str
-    source: str
-    url: HttpUrl
+    title: str
+    img_url: HttpUrl #TODO change later to storing images
+    summary: str
+    ingredients: List[Ingredient]
+    instructions: str
     notes: str
     submitter_id: int
 
-
 class RecipeUpdate(RecipeBase):
     id: int
-
 
 class RecipeUpdateRestricted(BaseModel):
     id: int
     label: str
     notes: str
-
 
 # Properties shared by models stored in DB
 class RecipeInDBBase(RecipeBase):
@@ -36,16 +35,13 @@ class RecipeInDBBase(RecipeBase):
     class Config:
         orm_mode = True
 
-
 # Properties to return to client
 class Recipe(RecipeInDBBase):
     pass
 
-
 # Properties properties stored in DB
 class RecipeInDB(RecipeInDBBase):
     pass
-
 
 class RecipeSearchResults(BaseModel):
     results: Sequence[Recipe]
