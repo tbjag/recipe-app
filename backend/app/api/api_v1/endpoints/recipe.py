@@ -15,6 +15,7 @@ from app.schemas.recipe import (
     RecipeUpdate,
 )
 from app.models.user import User
+from app.schemas.ingredient import Ingredient
 
 router = APIRouter()
 RECIPE_SUBREDDITS = ["recipes", "easyrecipes", "TopSecretRecipes"]
@@ -29,15 +30,43 @@ def fetch_recipe(
     """
     Fetch a single recipe by ID
     """
-    result = crud.recipe.get(db=db, id=recipe_id)
-    if not result:
+    recipe = crud.recipe.get(db=db, id=recipe_id)
+    
+    if not recipe:
         # the exception is raised, not returned - you will get a validation
         # error otherwise.
         raise HTTPException(
             status_code=404, detail=f"Recipe with ID {recipe_id} not found"
         )
+    
+    ingredient_data = crud.ingredient.get_multi_by_recipe(db=db, recipe_id=recipe_id)
+    ingredients = []
+    for ingredient in ingredient_data:
+        ingredients.append(
+            Ingredient(
+                name=ingredient.name,
+                quantity=ingredient.quantity,
+                unit_type=ingredient.unit_type,
+                notes=ingredient.notes
+            )
+        )
+    
+    print(ingredients)
 
-    return result
+    recipe_with_ingredients = Recipe(
+        id=recipe.id,
+        title=recipe.title,
+        img_url=recipe.img_url,
+        summary=recipe.summary,
+        ingredients=ingredients,
+        instructions=recipe.instructions,
+        notes=recipe.notes,
+        submitter_id=recipe.submitter_id
+    )
+
+    print(recipe_with_ingredients)
+
+    return recipe_with_ingredients
 
 
 @router.get("/my-recipes/", status_code=200, response_model=RecipeSearchResults)

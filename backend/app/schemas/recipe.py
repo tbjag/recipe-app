@@ -1,12 +1,11 @@
 from pydantic import BaseModel, HttpUrl
-from app.schemas.ingredient import Ingredient
+from app.schemas.ingredient import Ingredient, IngredientCreate
 from typing import Sequence, List
 
 class RecipeBase(BaseModel):
     title: str
     img_url: HttpUrl #TODO change later to storing images
     summary: str
-    ingredients: List[Ingredient]
     instructions: str
     notes: str
 
@@ -14,7 +13,7 @@ class RecipeCreate(RecipeBase):
     title: str
     img_url: HttpUrl #TODO change later to storing images
     summary: str
-    ingredients: List[Ingredient]
+    ingredients: List[IngredientCreate]
     instructions: str
     notes: str
     submitter_id: int
@@ -37,7 +36,7 @@ class RecipeInDBBase(RecipeBase):
 
 # Properties to return to client
 class Recipe(RecipeInDBBase):
-    pass
+    ingredients: List[Ingredient]
 
 # Properties properties stored in DB
 class RecipeInDB(RecipeInDBBase):

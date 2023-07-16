@@ -3,11 +3,18 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from app.schemas.recipe import RecipeCreate, RecipeUpdate
 from app.models.recipe import Recipe
+from app.models.ingredient import Ingredient
 
 class CRUDRecipe:
     def create(self, db:Session, *, obj_in= RecipeCreate) -> Recipe:
         obj_in_data = jsonable_encoder(obj_in)
+
+        # Extract the ingredients from the input and create instances of Ingredient
+        ingredients_data = obj_in_data.pop('ingredients', [])
+        ingredients = [Ingredient(**ing_data) for ing_data in ingredients_data]
+
         db_obj = Recipe(**obj_in_data)  # type: ignore
+        db_obj.ingredients = ingredients
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
@@ -29,6 +36,7 @@ class CRUDRecipe:
 
     def get(self, db: Session, id: Any) -> Recipe:
         return db.query(Recipe).filter(Recipe.id == id).first()
+         
 
     def get_multi(self, db: Session, *, skip: int = 0, limit: int = 5000) -> List[Recipe]:
         return db.query(Recipe).order_by(Recipe.id).offset(skip).limit(limit).all()
