@@ -144,3 +144,16 @@ def update_recipe(
 
     updated_recipe = crud.recipe.update(db=db, db_obj=recipe, obj_in=recipe_in)
     return updated_recipe
+
+@router.delete("/", status_code=201, response_model=Recipe)
+def delete_recipe(
+    *,
+    recipe_id: int,
+    db: Session = Depends(deps.get_db),):
+    """
+    TODO: error handling
+    """
+    
+    deleted_recipe = crud.recipe.remove(db, id=recipe_id)
+
+    return deleted_recipe
