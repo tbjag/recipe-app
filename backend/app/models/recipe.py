@@ -8,8 +8,8 @@ class Recipe(Base):
     title = Column(String(256), nullable=False)
     img_url = Column(String(256), index=True, nullable=True)
     summary = Column(String(256), nullable=True)
-    instructions = Column(String(256), nullable=False)
-    notes = Column(String(256), nullable=False)
+    instructions = Column(String(), nullable=False)
+    notes = Column(String(), nullable=False)
     submitter_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     submitter = relationship("User", back_populates="recipes")
     ingredients = relationship(

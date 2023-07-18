@@ -36,8 +36,8 @@ def upgrade():
         sa.Column("title", sa.String(length=256), nullable=False),
         sa.Column("img_url", sa.String(length=256), nullable=True),
         sa.Column("summary", sa.String(length=256), nullable=True),
-        sa.Column("instructions", sa.String(length=256), nullable=True),
-        sa.Column("notes", sa.String(length=256), nullable=True),
+        sa.Column("instructions", sa.String(), nullable=True),
+        sa.Column("notes", sa.String(), nullable=True),
         sa.Column("submitter_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["submitter_id"],

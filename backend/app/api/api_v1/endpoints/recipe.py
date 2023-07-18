@@ -38,7 +38,7 @@ def fetch_recipe(
         raise HTTPException(
             status_code=404, detail=f"Recipe with ID {recipe_id} not found"
         )
-    
+    #TODO remove this boilerplate, need to find another option here
     ingredient_data = crud.ingredient.get_multi_by_recipe(db=db, recipe_id=recipe_id)
     ingredients = []
     for ingredient in ingredient_data:
@@ -50,8 +50,6 @@ def fetch_recipe(
                 notes=ingredient.notes
             )
         )
-    
-    print(ingredients)
 
     recipe_with_ingredients = Recipe(
         id=recipe.id,
@@ -63,8 +61,6 @@ def fetch_recipe(
         notes=recipe.notes,
         submitter_id=recipe.submitter_id
     )
-
-    print(recipe_with_ingredients)
 
     return recipe_with_ingredients
 
@@ -151,9 +147,17 @@ def delete_recipe(
     recipe_id: int,
     db: Session = Depends(deps.get_db),):
     """
-    TODO: error handling
+    Delete recipe off id
     """
-    
-    deleted_recipe = crud.recipe.remove(db, id=recipe_id)
+    recipe = crud.recipe.get(db=db, id=recipe_id)
 
-    return deleted_recipe
+    if not recipe:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"Recipe with ID {recipe_id} not found"
+        )
+    
+    return crud.recipe.remove(db, id=recipe_id)
+
+    
