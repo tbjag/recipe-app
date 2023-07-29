@@ -24,7 +24,7 @@ class IngredientInDB(IngredientBase):
     recipe_id: int
 
     class Config:
-        orm_mode: bool = True
+        orm_mode = True
 
 
 class Ingredient(IngredientBase):

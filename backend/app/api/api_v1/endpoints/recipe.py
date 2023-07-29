@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -21,7 +21,7 @@ router = APIRouter()
 RECIPE_SUBREDDITS = ["recipes", "easyrecipes", "TopSecretRecipes"]
 
 
-@router.get("/{recipe_id}", status_code=200, response_model=Recipe)
+@router.get("/{recipe_id}", status_code=200, response_model=Any)
 def fetch_recipe(
     *,
     recipe_id: int,
@@ -64,8 +64,7 @@ def fetch_recipe(
 
     return recipe_with_ingredients
 
-
-@router.get("/my-recipes/", status_code=200, response_model=RecipeSearchResults)
+@router.get("/my-recipes/", status_code=200, response_model=Any)
 def fetch_user_recipes(
     *,
     db: Session = Depends(deps.get_db),
@@ -75,14 +74,18 @@ def fetch_user_recipes(
     Fetch all recipes for a user
     """
     recipes = current_user.recipes
-    print(recipes)
+
     if not recipes:
         return {"results": list()}
+
+    for recipe in recipes:
+        for ingredient in recipe.ingredients:
+            print(ingredient.name)
 
     return {"results": list(recipes)}
 
 
-@router.get("/search/", status_code=200, response_model=RecipeSearchResults)
+@router.get("/search/", status_code=200, response_model=Any)
 def search_recipes(
     *,
     keyword: str = Query(None, min_length=3, example="chicken"),
@@ -93,12 +96,12 @@ def search_recipes(
     Search for recipes based on label keyword
     """
     recipes = crud.recipe.get_multi(db=db, limit=max_results)
-    results = filter(lambda recipe: keyword.lower() in recipe.label.lower(), recipes)
+    results = filter(lambda recipe: keyword.lower() in recipe.title.lower(), recipes)
 
     return {"results": list(results)}
 
 
-@router.post("/", status_code=201, response_model=Recipe)
+@router.post("/", status_code=201, response_model=Any)
 def create_recipe(
     *,
     recipe_in: RecipeCreate,
@@ -112,13 +115,13 @@ def create_recipe(
         raise HTTPException(
             status_code=403, detail=f"You can only submit recipes as yourself"
         )
-    #recipe = crud.recipe.create(db=db, obj_in=recipe_in)
+    
     recipe = crud.recipe.create(db=db, obj_in=recipe_in)
     return recipe
 
 
 @router.put("/", status_code=201, response_model=Recipe)
-def update_recipe(
+def update_recipe_todo(
     *,
     recipe_in: RecipeUpdate,
     db: Session = Depends(deps.get_db),
